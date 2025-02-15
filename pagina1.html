@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head> </head>
+<head> 
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="postres-style.css">
+</head>
 <body>
-    <img src="manzana.jpg" alt= "imagen de una tarta de manzana" width="300" height="" > 
-    <h1>Recetas de Postres</h1>
-    <h2 id="menu">Menú de Recetas de Postres </h2>
+  <div class="imagen-main"> 
+    <img src="manzana.jpg" alt= "imagen de una tarta de manzana" > 
+  </div>
+    
+    <h1 id="main-title">Recetas de Postres</h1>
+   <div class="intro">
     <p>Bienvenido a nuestra página de recetas de postres. Aquí encontrarás deliciosas recetas fáciles de preparar para endulzar tu día. Explora nuestras opciones y disfruta de la magia de la repostería.
-        
-        <ul>
+    </div>
+        <ul id="menu" class="nav">
         <li><a href="#manzana"> Postre de Manzana</a></li>
         <li><a href="#chocolate">Pastel de Chocolate</a></li>
-        <li><a href="fresa">Tarta de Fresas</a></li>
+        <li><a href="#fresa">Tarta de Fresas</a></li>
         </ul>   
         
         
         </p>
-    <h3 id ="manzana" >  Postre de Manzana</h3>
+    <div class="postre-manzana">
+      <h3 id ="manzana" >  Postre de Manzana</h3>
    <p>
     El postre de manzana es una opción clásica y deliciosa, ideal para cualquier ocasión. Su combinación de dulzura y acidez lo convierte en un favorito de todos.
    </p> 
@@ -40,8 +47,10 @@
     <li>Hornear a 180°C durante 25-30 minutos.</li>
     <li>Servir caliente y disfrutar.</li>
    </ol>
+  </div>
  <p><a href="#menu">regresar al menu</a></p>
- 
+
+ <div class="postre-chocolate">
    <h5 id ="chocolate" >   Pastel de Chocolate </h5>     
   <p>  El pastel de chocolate es un postre irresistible para los amantes del cacao. Su textura esponjosa y su sabor intenso hacen que sea un placer para el paladar.</p>
     
@@ -63,9 +72,10 @@
     <li>Verter la mezcla en un molde y hornear a 180°C por 30 minutos.</li>
     <li>Dejar enfriar y servir.</li>
     </ol>
+  </div>
     
     <p><a href="#menu">regresar al menu</a></p>
-        
+       <div class="postre-fresa"> 
     <h6 id ="fresa" >Tarta de Fresas</h6>
     <p>La tarta de fresas es un postre fresco y ligero, perfecto para los días cálidos. Su combinación de fresas y crema la convierte en una opción deliciosa y elegante.
     </p>
@@ -88,6 +98,7 @@
         <li>Preparar la gelatina según instrucciones y verter sobre las fresas.</li>
        <li> Refrigerar por 2 horas antes de servir.</li>
     </ol>
+  </div>
     <p><a href="#menu">regresar al menu</a></p>
 </body>
 
