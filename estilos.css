@@ -1,0 +1,12 @@
+div {
+margin-top: 20px;
+background-color: lightcyan;
+font-size: 40px
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 40px;
+}

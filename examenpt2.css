@@ -1,0 +1,80 @@
+h1,h2,h3{
+    color: blue;
+}
+
+
+#t1 {
+font-size: 40px;
+}
+#t2{
+    font-size: 30px;
+}
+
+#t3{
+    font-size: 20px;
+}
+.ft1 { 
+    background-color: aqua;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 27px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    
+}
+.ft1 img {
+    width: 200px;
+    height: 200px;
+    border: 2px solid red;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th,td{
+    border: 1px solid #ddd;
+    padding: 10px; ;
+    text-align: center;
+}
+th{
+    background-color: blue;
+    color: black;
+    text-align: center;
+}
+td:first-child {
+    background-color: #800020; 
+    color: white;
+}
+td {
+    background-color: beige;
+}
+
+.banderas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 500px;
+    height: 100px;
+    background-color: white;
+}
+.fr, .al, .it {
+    width: 100px;
+    height: 60px;
+}
+
+.fr {
+    background: linear-gradient(to right, blue 33.33%, white 33.33%, white 66.66%, red 66.66%);
+}
+
+.al {
+    background: linear-gradient(to bottom, black 33.33%, red 33.33%, red 66.66%, yellow 66.66%);
+}
+
+.it {
+    background: linear-gradient(to right, green 33.33%, white 33.33%, white 66.66%, red 66.66%);
+}

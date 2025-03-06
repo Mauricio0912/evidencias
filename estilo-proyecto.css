@@ -1,0 +1,43 @@
+h1 {
+    font-size: 2.5rem;
+    font-family: "Roboto", sans-serif;;
+}
+.navbar{
+    padding: 2rem;
+    background-color: white;
+}
+
+
+.navbar-collapse{
+    align-items: centers;
+    justify-content: space-between;
+}
+
+.hero{
+    background-color: whitesmoke;
+    min-height: 450px;
+    text-align: center;
+}
+
+.hero-principal{
+    padding: 3rem;
+}
+.hero-imagen-batman{
+    width: 200px;
+    height: 200px;
+    margin: gray;
+}
+
+ 
+@media screen and (max-width :767px){
+    .navbar-brand{
+        display: none;
+  
+    }
+}
+
+@media screen and (min-width: 700px){
+.hero-inferior-imagen{ 
+    max-width :400px
+}
+}
