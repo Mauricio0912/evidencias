@@ -1,0 +1,34 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra para darle un toque elegante */
+    margin: 20px 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px; /* Aumenta el tamaño del padding para mejor legibilidad */
+    text-align: left;
+}
+
+th {
+    background-color: #004d99; /* Azul corporativo */
+    color: #ffffff; /* Texto blanco para contraste */
+    text-transform: uppercase; /* Letras mayúsculas para resaltar encabezados */
+    letter-spacing: 1px; /* Espaciado entre caracteres */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Gris claro */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff; /* Blanco */
+}
+
+tr:hover {
+    background-color: #d1e0f5; /* Color de fondo en hover */
+    cursor: pointer; /* Cursor tipo puntero para mejor interacción */
+}

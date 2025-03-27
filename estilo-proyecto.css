@@ -2,6 +2,15 @@ h1 {
     font-size: 2.5rem;
     font-family: "Roboto", sans-serif;;
 }
+
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;        
+    font-family: "Roboto", sans-serif;
+}
+
 .navbar{
     padding: 2rem;
     background-color: white;
@@ -27,8 +36,71 @@ h1 {
     height: 200px;
     margin: gray;
 }
+.sobre-mi {
+    height: 500px;
+    padding: 10px;
+}
+.sobre-mi .contenedor{
 
- 
+max-width: 600px;
+text-align: center;
+}
+.seccion-clara{
+    color: black;
+    background-color: white;
+}
+
+.seccion-oscura {
+    color: white;
+    background-color: black;
+}
+.seccion-titulo {
+    font-size: 2rem;
+    padding: 15px 0px;
+}
+
+.seccion-texto{
+    font-size: 1.2rem ;
+
+}
+.experiencia {
+    padding: 40px 60px 40px;
+}
+
+.experiencia .columna{
+    padding: 20px;
+    border: 2px solid blueviolet;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    transition: 0.2s ease-in;
+}
+.experiencia i {
+    font-size: 2.5rem;
+    color: pink;
+    background-color: violet;
+    padding: 8px 18px;
+    border-radius: 50%  ;
+}
+.experiencia .columna:hover{
+    color: aliceblue;
+    background-color: black;
+} 
+.experiencia-titulo {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.badges-contenedor{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.badges{
+    margin: 5px;
+}
+
 @media screen and (max-width :767px){
     .navbar-brand{
         display: none;
@@ -40,4 +112,5 @@ h1 {
 .hero-inferior-imagen{ 
     max-width :400px
 }
+
 }
