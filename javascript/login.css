@@ -1,0 +1,94 @@
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #2EC4B6, #008B8B);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor del login */
+.login-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+/* Título */
+.login-container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #006D77;
+    text-transform: capitalize;
+}
+
+/* Estilos del formulario */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Etiquetas */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #00796B;
+}
+
+/* Campos de entrada */
+.form-group input {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #00A896;
+    border-radius: 6px;
+    font-size: 16px;
+    background: #E0F2F1;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #006D77;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 150, 136, 0.5);
+}
+
+/* Botón de enviar */
+.submit-btn {
+    background: #008B8B;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+.submit-btn:hover {
+    background: #00796B;
+    transform: translateY(-2px);
+}
+
+/* Animación sutil */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplica la animación */
+.login-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
