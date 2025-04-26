@@ -23,7 +23,7 @@ app.post('/insertar', async (req, res) => {
         const { marca, modelo, placa, color, año } = req.body;
         await cliente.connect();
         const db = cliente.db('DataBaseGrupoA');
-        const coleccion = db.collection('carros');  // Cambiado a 'carros'
+        const coleccion = db.collection('carros');  
         
         await coleccion.insertOne({
             marca: marca,
