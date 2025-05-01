@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h1 { text-align: center; color: #333; }
+    form { display: flex; flex-direction: column; }
+    input {
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+    .register { text-align: center; margin-top: 10px; }
+    .register a { color: #007bff; text-decoration: none; }
+    .register a:hover { text-decoration: underline; }
+    #registroModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .success { background-color: #d4edda; color: #155724; }
+    .error { background-color: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Iniciar Sesión</h1>
+  <form id="loginForm">
+    <input type="text" name="nombre" placeholder="Usuario" required>
+    <input type="password" name="contraseña" placeholder="Contraseña" required>
+    <button type="submit">Entrar</button>
+  </form>
+  <div class="register">
+    ¿No tienes una cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a>
+  </div>
+  <div id="messageContainerLogin"></div>
+</div>
+
+<div id="registroModal">
+  <div class="modal-content">
+    <h1>Registro</h1>
+    <form id="registroForm">
+      <input type="text" name="nombre" placeholder="Usuario" required>
+      <input type="email" name="correo" placeholder="Correo electrónico" required>
+      <input type="password" name="contraseña" placeholder="Contraseña" required>
+      <button type="submit">Registrarse</button>
+      <button type="button" onclick="cerrarRegistro()">Cerrar</button>
+    </form>
+    <div id="messageContainer"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+  function mostrarRegistro() {
+    document.getElementById('registroModal').style.display = 'flex';
+  }
+
+  function cerrarRegistro() {
+    document.getElementById('registroModal').style.display = 'none';
+    document.getElementById('messageContainer').textContent = '';
+    document.getElementById('messageContainer').className = '';
+  }
+
+  document.getElementById('registroForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const datos = Object.fromEntries(formData.entries());
+    const messageContainer = document.getElementById('messageContainer');
+    
+    try {
+      const hashedPassword = CryptoJS.SHA256(datos.contraseña).toString(CryptoJS.enc.Hex);
+      datos.contraseña = hashedPassword;
+      
+      const respuesta = await fetch('http://localhost:3000/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      const resultado = await respuesta.json();
+      
+      messageContainer.textContent = resultado.mensaje;
+      messageContainer.className = 'message ' + (respuesta.ok ? 'success' : 'error');
+      
+      if (respuesta.ok) {
+        setTimeout(cerrarRegistro, 1500);
+      }
+    } catch (error) {
+      messageContainer.className = 'message error';
+      messageContainer.textContent = 'Error de conexión con el servidor';
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const datos = Object.fromEntries(formData.entries());
+    const messageContainer = document.getElementById('messageContainerLogin');
+
+    try {
+      const respuesta = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      const resultado = await respuesta.json();
+      
+      messageContainer.textContent = resultado.mensaje;
+      messageContainer.className = 'message ' + (respuesta.ok ? 'success' : 'error');
+      
+      if (respuesta.ok) {
+        console.log('Usuario autenticado:', resultado.usuario);
+        // Redirigir o realizar otras acciones después del login
+      }
+    } catch (error) {
+      messageContainer.className = 'message error';
+      messageContainer.textContent = 'Error de conexión con el servidor';
+    }
+  });
+</script>
+</body>
+</html>
