@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Canciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-editar {
+            background-color: #28a745;
+        }
+
+        .btn-editar:hover {
+            background-color: #218838;
+        }
+
+        /* Estilos mejorados para el formulario */
+        #formCancion {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: left;
+        }
+
+        #formCancion label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        #formCancion input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #formCancion button {
+            width: 100%;
+            background-color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+<h1>Gestión de Canciones</h1>
+
+<!-- Menú de opciones -->
+<div>
+    <button id="insertarCancion">Insertar Nuevo Registro</button>
+    <button id="eliminarCancion">Eliminar Registro</button>
+</div>
+
+<!-- Tabla de canciones -->
+<table id="tabla-canciones">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Canción</th>
+        <th>Artista</th>
+        <th>Duración</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Las filas se agregarán dinámicamente aquí -->
+    </tbody>
+</table>
+
+<!-- Formulario mejorado -->
+<form id="formCancion">
+    <h3 id="formTitulo"></h3>
+    <label for="cancion">Canción:</label>
+    <input type="text" id="cancion" required>
+    <label for="artista">Artista:</label>
+    <input type="text" id="artista" required>
+    <label for="duracion">Duración:</label>
+    <input type="text" id="duracion" required>
+    <button type="button" id="guardarCancion">Guardar</button>
+</form>
+
+<script>
+    const API_URL = 'http://localhost:3000/canciones';
+    const tablaBody = document.querySelector('#tabla-canciones tbody');
+    const formCancion = document.getElementById('formCancion');
+    const formTitulo = document.getElementById('formTitulo');
+    const inputCancion = document.getElementById('cancion');
+    const inputArtista = document.getElementById('artista');
+    const inputDuracion = document.getElementById('duracion');
+    let editandoId = null;
+
+    function cargarCanciones() {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                tablaBody.innerHTML = '';
+                data.forEach(cancion => {
+                    const fila = document.createElement('tr');
+
+                    fila.innerHTML = `
+                            <td>${cancion.id}</td>
+                            <td>${cancion.cancion}</td>
+                            <td>${cancion.artista}</td>
+                            <td>${cancion.duracion}</td>
+                            <td>
+                                <button class="btn-editar" onclick="mostrarFormulario('Editar Canción', ${JSON.stringify(cancion)}, ${cancion.id})">Editar</button>
+                            </td>
+                        `;
+                    tablaBody.appendChild(fila);
+                });
+            })
+            .catch(error => console.error('Error al cargar los datos:', error));
+    }
+
+    function mostrarFormulario(titulo, cancion = {}, id = null) {
+        formTitulo.textContent = titulo;
+        inputCancion.value = cancion.cancion || '';
+        inputArtista.value = cancion.artista || '';
+        inputDuracion.value = cancion.duracion || '';
+        formCancion.style.display = 'block';
+        editandoId = id;
+    }
+
+    document.getElementById('insertarCancion').addEventListener('click', () => {
+        mostrarFormulario('Insertar Nueva Canción');
+    });
+
+    document.getElementById('guardarCancion').addEventListener('click', () => {
+        const nuevaCancion = {
+            cancion: inputCancion.value,
+            artista: inputArtista.value,
+            duracion: inputDuracion.value
+        };
+
+        if (editandoId) {
+            fetch(`${API_URL}/${editandoId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevaCancion)
+            })
+                .then(() => {
+                    cargarCanciones();
+                    formCancion.style.display = 'none';
+                })
+                .catch(error => console.error('Error al editar la canción:', error));
+        } else {
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevaCancion)
+            })
+                .then(() => {
+                    cargarCanciones();
+                    formCancion.style.display = 'none';
+                })
+                .catch(error => console.error('Error al insertar la canción:', error));
+        }
+    });
+
+    document.getElementById('eliminarCancion').addEventListener('click', () => {
+        const id = prompt('Ingresa el ID de la canción a eliminar:');
+        if (id) {
+            fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+                .then(() => cargarCanciones())
+                .catch(error => console.error('Error al eliminar la canción:', error));
+        }
+    });
+
+    cargarCanciones();
+</script>
+</body>
+</html>
