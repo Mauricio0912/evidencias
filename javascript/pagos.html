@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Pagos</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #6772e5;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #5469d4;
+    }
+    #mensaje {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+      display: none;
+    }
+    .error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+    .success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sistema de Pagos</h1>
+  
+  <form id="formulario-pago">
+    <div class="input-group">
+      <label for="cantidad">Cantidad (Mínimo $0.50):</label>
+      <input type="number" id="cantidad" step="0.01" min="0.5" required>
+    </div>
+    
+    <div class="input-group">
+      <label for="moneda">Moneda:</label>
+      <select id="moneda" required>
+        <option value="mxn">MXN - Peso mexicano</option>
+        <option value="usd">USD - Dólar americano</option>
+      </select>
+    </div>
+    
+    <div class="input-group">
+      <label for="descripcion">Descripción:</label>
+      <input type="text" id="descripcion" required>
+    </div>
+    
+    <button type="submit" id="btn-pagar">Pagar Ahora</button>
+  </form>
+  
+  <div id="mensaje"></div>
+
+  <script>
+    // 1. Configura Stripe - Clave pública eliminada
+    const stripe = Stripe(''); // Configura esta variable en producción
+    
+    // 2. Elementos del DOM
+    const form = document.getElementById('formulario-pago');
+    const btnPagar = document.getElementById('btn-pagar');
+    const mensaje = document.getElementById('mensaje');
+    
+    // 3. Manejador del formulario
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Deshabilitar botón y resetear mensajes
+      btnPagar.disabled = true;
+      mensaje.style.display = 'none';
+      
+      try {
+        // Obtener valores
+        const cantidad = document.getElementById('cantidad').value;
+        const moneda = document.getElementById('moneda').value;
+        const descripcion = document.getElementById('descripcion').value;
+        
+        // Validación básica
+        if (!cantidad || parseFloat(cantidad) < 0.5) {
+          throw new Error('La cantidad mínima es $0.50');
+        }
+        
+        // Enviar al backend
+        const response = await fetch('http://localhost:3000/crear-pago', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cantidad, moneda, descripcion })
+        });
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.error || 'Error al procesar el pago');
+        }
+        
+        // Confirmar pago con Stripe
+        const { error } = await stripe.confirmPayment({
+          clientSecret: data.clientSecret,
+          confirmParams: {
+            return_url: window.location.href,
+          },
+        });
+        
+        if (error) throw error;
+        
+        // Mostrar éxito
+        mostrarMensaje('¡Pago procesado correctamente!', 'success');
+        
+      } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje(`Error: ${error.message}`, 'error');
+      } finally {
+        btnPagar.disabled = false;
+      }
+    });
+    
+    // Función para mostrar mensajes
+    function mostrarMensaje(texto, tipo) {
+      mensaje.textContent = texto;
+      mensaje.className = tipo;
+      mensaje.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
